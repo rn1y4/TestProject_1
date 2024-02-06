@@ -12,6 +12,7 @@ public class ToggleObjectSelector : MonoBehaviour
     {
         public Toggle toggle;
         public GameObject prefab;
+        public Image image;
     }
 
     // Toggleとプレハブのペアを保存するリスト
