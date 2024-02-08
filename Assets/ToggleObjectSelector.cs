@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ToggleObjectSelector : MonoBehaviour
 {
-
     // Toggleとプレハブを関連付けるためのクラス定義
     [System.Serializable]
     public class ToggleObjectPair
@@ -21,7 +20,6 @@ public class ToggleObjectSelector : MonoBehaviour
     // CameraGeneratorControllerスクリプトへの参照
     public CameraGeneratorController generatorController;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +34,6 @@ public class ToggleObjectSelector : MonoBehaviour
                 }
                 else
                 {
-                    //トグルがオフになった場合生成対象をnullに設定
                     generatorController.generateTarget = null;
                 }
             });
@@ -48,11 +45,5 @@ public class ToggleObjectSelector : MonoBehaviour
                 label.text = pair.prefab.name;
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

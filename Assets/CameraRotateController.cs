@@ -13,14 +13,17 @@ public class CameraRotateController : MonoBehaviour
     public float maxup = 30;
     public float mindown = -80;
 
+    private Vector3 oldPos;
+    public CameraGeneratorController generatorController; // CameraGeneratorControllerへの参照を追加
+
     //ToggleGroupオブジェクトを取得
     public GameObject toggleGroupObject;
-
-    bool isActive = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        // トグルが表示されている場合、ここで処理を終了する
+        if (generatorController.toggleGroup.gameObject.activeSelf) return;
         newAngle = this.gameObject.transform.localEulerAngles;
         lastMousePosition = Input.mousePosition;
     }
@@ -62,8 +65,8 @@ public class CameraRotateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ToggleGroupが表示されている時はCameraRotate操作を無効化
-        if (toggleGroupObject.activeSelf) return;
+        // Toggleが表示されている場合または選択モードの場合、ここで処理を終了する
+        if (generatorController.toggleGroup.gameObject.activeSelf || EditModeManager.instance.isSelecting) return;
 
 
         //カーソルロックされていない場合、マウスポインターがある方向にカメラを向かせる
