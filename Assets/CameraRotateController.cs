@@ -65,9 +65,20 @@ public class CameraRotateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Toggleが表示されている場合または選択モードの場合、ここで処理を終了する
-        if (generatorController.toggleGroup.gameObject.activeSelf || EditModeManager.instance.isSelecting) return;
+        //右クリックでEditModeを切り替え
+        if (Input.GetMouseButtonDown(1))
+        {
+            EditModeManager.instance.ToggleWithRightClick();
+        }
 
+        //スペースキーでEditModeを切り替え
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EditModeManager.instance.ToggleWithSpace();
+        }
+
+        // Toggleが表示されている場合または選択モードの場合、ここで処理を終了する
+        if (generatorController.toggleGroup.gameObject.activeSelf || EditModeManager.instance.currentMode != EditModeManager.EditMode.Generating) return;
 
         //カーソルロックされていない場合、マウスポインターがある方向にカメラを向かせる
         if (UnityEngine.Cursor.lockState == CursorLockMode.None)

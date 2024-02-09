@@ -69,13 +69,24 @@ public class CameraGeneratorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //右クリックでEditModeを切り替え
+        if (Input.GetMouseButtonDown(1))
+        {
+            EditModeManager.instance.ToggleWithRightClick();
+            // TogglingモードのときにはToggleを表示、それ以外のときには非表示にする
+            toggleGroup.gameObject.SetActive(EditModeManager.instance.currentMode == EditModeManager.EditMode.Toggling);
+        }
 
-            CheckRightClick(); //右クリックが押されたときの処理
+        //スペースキーでEditModeを切り替え
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EditModeManager.instance.ToggleWithSpace();
+        }
 
-            //選択モードの場合、ここで処理を終了する
-            if (EditModeManager.instance.isSelecting) return;
-
-            CheckLeftClick(); //左クリックが押されたときの処理
-
+        // 生成モードで左クリックが押されたときにオブジェクトを生成する
+        if (EditModeManager.instance.currentMode == EditModeManager.EditMode.Generating && Input.GetMouseButtonDown(0))
+        {
+            CheckLeftClick();
         }
     }
+}

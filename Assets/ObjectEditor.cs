@@ -19,37 +19,39 @@ public class ObjectEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //スペースキーで選択モード切り替え
-        if (Input.GetKeyDown(KeyCode.Space))
+        //右クリックでEditModeを切り替え
+        if (Input.GetMouseButtonDown(1))
         {
-            ObjectEditMode();
+            EditModeManager.instance.ToggleWithRightClick();
+            // Movingフラグを下す
+            if (EditModeManager.instance.isMoving)
+            {
+                EditModeManager.instance.SetMoving(false);
+            }
         }
 
+        //スペースキーでEditModeを切り替え
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EditModeManager.instance.ToggleWithSpace();
+            // Movingフラグを下す
+            if (EditModeManager.instance.isMoving)
+            {
+                EditModeManager.instance.SetMoving(false);
+            }
+        }
+
+        // 現在のEditModeに基づいてテキストを表示
+        modeText.text = "Mode: " + EditModeManager.instance.currentMode.ToString();
+
         // 選択モードで左クリックが押されたときにオブジェクトを選択する
-        if (EditModeManager.instance.isSelecting && Input.GetMouseButtonDown(0))
+        if (EditModeManager.instance.currentMode == EditModeManager.EditMode.Selecting && Input.GetMouseButtonDown(0))
         {
             SelectObjectWithRaycast();
         }
     }
 
-    void ObjectEditMode()
-    {
-        EditModeManager.instance.ObjectEditMode();
-        Debug.Log("EditModeManager.instance.isSelecting: " + EditModeManager.instance.isSelecting); // デバッグ: 選択モードの状態をログに出力
-
-        // 選択モードの表示を更新
-        if (modeText != null)
-        {
-            modeText.text = EditModeManager.instance.isSelecting ? "Mode: Selecting" : "Mode: Normal";
-            Debug.Log("Updated modeText: " + modeText.text); // デバッグ: テキストの内容をログに出力
-        }
-        else
-        {
-            Debug.LogError("modeText is not set");
-        }
-    }
-
-    void SelectObjectWithRaycast()
+    public void SelectObjectWithRaycast()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -73,6 +75,8 @@ public class ObjectEditor : MonoBehaviour
                 {
                     //Rayがあたったオブジェクトを選択する
                     selectedObject = hit.collider.gameObject;
+                    EditModeManager.instance.SetMoving(true); // Movingフラグを立てる
+
 
                     // 選択中のオブジェクトの名前をテキストで表示
                     if (selectedObjectNameText != null)
@@ -85,35 +89,45 @@ public class ObjectEditor : MonoBehaviour
                         Debug.LogError("selectedObjectNameText is not set");
                     }
                 }
+                else
+                {
+                    // デバッグ: レイキャストがヒットしなかった場合のログ
+                    Debug.Log("Raycast did not hit any object");
+                }
             }
-            else
+        }
+    }
+
+
+        //x方向のオブジェクト移動
+        public void MoveObjectX(bool positive)
+        {
+            // Movingフラグが下がっている場合、ここで処理をスキップ
+            if (!EditModeManager.instance.isMoving) return;
+
+            if (selectedObject != null)
             {
-                // デバッグ: レイキャストがヒットしなかった場合のログ
-                Debug.Log("Raycast did not hit any object");
+                float direction = positive ? 1f : -1f;
+                selectedObject.transform.Translate(Vector3.right * direction, Space.World);
             }
         }
-    }
 
-    //x方向のオブジェクト移動
-    public void MoveObjectX(bool positive)
-    {
-        if (EditModeManager.instance.isSelecting && selectedObject != null)
+        //z方向のオブジェクト移動
+        public void MoveObjectZ(bool positive)
         {
-            float direction = positive ? 1f : -1f;
-            selectedObject.transform.Translate(Vector3.right * direction, Space.World);
-        }
-    }
+            // Movingフラグが下がっている場合、ここで処理をスキップ
+            if (!EditModeManager.instance.isMoving) return;
 
-    //z方向のオブジェクト移動
-    public void MoveObjectZ(bool positive)
-    {
-        if (EditModeManager.instance.isSelecting && selectedObject != null)
-        {
-            float direction = positive ? 1f : -1f;
-            selectedObject.transform.Translate(Vector3.forward * direction, Space.World);
+            if (selectedObject != null)
+            {
+                float direction = positive ? 1f : -1f;
+                selectedObject.transform.Translate(Vector3.forward * direction, Space.World);
+            }
         }
-    }
-    public void OnRightButtonDown()
+
+
+        /*
+        public void OnRightButtonDown()
     {
         MoveObjectX(true);
     }
@@ -131,5 +145,5 @@ public class ObjectEditor : MonoBehaviour
     public void OnDownButtonDown()
     {
         MoveObjectZ(false);
-    }
+    }*/
 }
