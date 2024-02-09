@@ -19,28 +19,6 @@ public class ObjectEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //右クリックでEditModeを切り替え
-        if (Input.GetMouseButtonDown(1))
-        {
-            EditModeManager.instance.ToggleWithRightClick();
-            // Movingフラグを下す
-            if (EditModeManager.instance.isMoving)
-            {
-                EditModeManager.instance.SetMoving(false);
-            }
-        }
-
-        //スペースキーでEditModeを切り替え
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EditModeManager.instance.ToggleWithSpace();
-            // Movingフラグを下す
-            if (EditModeManager.instance.isMoving)
-            {
-                EditModeManager.instance.SetMoving(false);
-            }
-        }
-
         // 現在のEditModeに基づいてテキストを表示
         modeText.text = "Mode: " + EditModeManager.instance.currentMode.ToString();
 
@@ -50,7 +28,19 @@ public class ObjectEditor : MonoBehaviour
             SelectObjectWithRaycast();
         }
     }
-
+    public static void CheckSpaseKeyDown()
+    {
+        //スペースキーでEditModeを切り替え
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EditModeManager.instance.ToggleWithSpace();
+        }
+        // Movingフラグを下す
+        if (EditModeManager.instance.isMoving)
+        {
+            EditModeManager.instance.SetMoving(false);
+        }
+    }
     public void SelectObjectWithRaycast()
     {
         if (Input.GetMouseButtonDown(0))

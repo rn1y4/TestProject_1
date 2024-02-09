@@ -26,8 +26,9 @@ public class CameraGeneratorController : MonoBehaviour
         //生成機能とToggleGroupeを表示を切り替える
         if (Input.GetMouseButtonDown(1))
         {
-            canGenerate = !canGenerate; //右クリックが押されたときは生成を切り替え
-            toggleGroup.gameObject.SetActive(!toggleGroup.gameObject.activeSelf);
+            // TogglingモードのときにはToggleを表示、それ以外のときには非表示にする
+            toggleGroup.gameObject.SetActive(EditModeManager.instance.currentMode == EditModeManager.EditMode.Toggling);
+            EditModeManager.instance.ToggleWithRightClick();
             cameraController.BackUpMousePosition(); //ToggleGroupの表示状態が切り替わる時にマウス位置を保存
         }
     }
@@ -41,8 +42,10 @@ public class CameraGeneratorController : MonoBehaviour
         // Toggleが表示されている場合、ここで処理を終了する
         if (toggleGroup.gameObject.activeSelf) return;
 
+
+
         //レイヤがGroundのオブジェクト上のみにオブジェクトを生成する
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && EditModeManager.instance.currentMode == EditModeManager.EditMode.Generating)
         {
             Ray ray = maincamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -70,21 +73,12 @@ public class CameraGeneratorController : MonoBehaviour
     void Update()
     {
         //右クリックでEditModeを切り替え
-        if (Input.GetMouseButtonDown(1))
-        {
-            EditModeManager.instance.ToggleWithRightClick();
-            // TogglingモードのときにはToggleを表示、それ以外のときには非表示にする
-            toggleGroup.gameObject.SetActive(EditModeManager.instance.currentMode == EditModeManager.EditMode.Toggling);
-        }
+        CheckRightClick();
 
-        //スペースキーでEditModeを切り替え
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EditModeManager.instance.ToggleWithSpace();
-        }
+        ObjectEditor.CheckSpaseKeyDown();
 
         // 生成モードで左クリックが押されたときにオブジェクトを生成する
-        if (EditModeManager.instance.currentMode == EditModeManager.EditMode.Generating && Input.GetMouseButtonDown(0))
+        if (EditModeManager.instance.currentMode == EditModeManager.EditMode.Generating)
         {
             CheckLeftClick();
         }
