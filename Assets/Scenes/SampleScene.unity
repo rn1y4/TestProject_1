@@ -345,7 +345,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 5f1efd8696252784aaf2b0a8048afc27, type: 3}
     - target: {fileID: 5655313285722034909, guid: 0c4179db31406e7448d1ba69b153a31b, type: 3}
       propertyPath: m_IsOn
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5655313285722034909, guid: 0c4179db31406e7448d1ba69b153a31b, type: 3}
       propertyPath: m_Group
@@ -2405,6 +2405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1768681db6f82b439cb40a23cc8c350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generatorController: {fileID: 1199575501}
 --- !u!114 &1199575506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2436,8 +2437,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedObject: {fileID: 0}
-  selectedObjectNameText: {fileID: 983536155}
-  modeText: {fileID: 887163618}
+  selectedObjectNameText: {fileID: 887163618}
+  modeText: {fileID: 983536155}
 --- !u!114 &1199575508
 MonoBehaviour:
   m_ObjectHideFlags: 0
