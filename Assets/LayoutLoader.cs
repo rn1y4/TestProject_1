@@ -7,10 +7,20 @@ using UnityEngine.UI;
 
 public class LayoutLoader : MonoBehaviour
 {
-    //生成するオブジェクトのプレハブ
-    public Dictionary<string, GameObject> objectPrefabs = new Dictionary<string, GameObject>();
+    public ToggleObjectSelector.ToggleObjectPair[] toggleObjectPairs;  // 名前とプレハブのペアの配列
+    private Dictionary<string, GameObject> objectPrefabs; // 名前とプレハブの辞書
     public Dropdown layoutDropdown;
     public Transform objectsParent; //生成したオブジェクトを格納する親オブジェクト
+
+    private void Start()
+    {
+        // 配列から辞書を作成
+        objectPrefabs = new Dictionary<string, GameObject>();
+        foreach (var pair in toggleObjectPairs)
+        {
+            objectPrefabs.Add(pair.prefab.name, pair.prefab);
+        }
+    }
 
     public void LoadLayout()
     {
@@ -42,6 +52,7 @@ public class LayoutLoader : MonoBehaviour
             //オブジェクトのプレハブを取得し、インスタンスを作成
             GameObject prefab = objectPrefabs[data.name];
             GameObject instance = Instantiate(prefab, objectsParent); //生成したオブジェクトを特定の親オブジェクトの子とする
+            instance.name = data.name;//インスタンスの名前をセーブデータの名前に設定
 
             //インスタンスの位置を設定
             instance.transform.position = data.position;

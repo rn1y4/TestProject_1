@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class CameraRotateController : MonoBehaviour
 {
-    private Vector3 newAngle ;
+    private Vector3 newAngle;
     private Vector3 lastMousePosition;
     public float y_rotate = 0.5f;
     public float x_rotate = 0.5f;
@@ -16,7 +16,7 @@ public class CameraRotateController : MonoBehaviour
     //ToggleGroupオブジェクトを取得
     public GameObject toggleGroupObject;
 
-    bool isActive = true;
+    //bool isActive = true;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +28,7 @@ public class CameraRotateController : MonoBehaviour
     //右クリックされた時のマウス位置を保存
     public void BackUpMousePosition()
     {
-        lastMousePosition= Input.mousePosition;
+        lastMousePosition = Input.mousePosition;
     }
 
     void UpdateCameraAngle()
